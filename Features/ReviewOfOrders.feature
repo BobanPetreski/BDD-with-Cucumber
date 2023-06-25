@@ -1,6 +1,7 @@
-Feature: Anhoch Homepage
+Feature: ReviewOfOrders
 
-  Scenario: Order review on Anhoch.com
+  @SmokeTest
+  Scenario: Order review on Anhoch.mk
     Given I launch chrome browser
     When I open Anhoch homapage
     Then I verify that logo is displayed on page
@@ -9,5 +10,5 @@ Feature: Anhoch Homepage
     Then I click ok button
     When I click on dropdown button
     And I click on review of orders
-    And I checked current URL
+    When I checked current URL
     And close browser

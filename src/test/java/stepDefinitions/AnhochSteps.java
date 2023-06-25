@@ -1,11 +1,15 @@
 package stepDefinitions;
 
-import io.cucumber.java.en.*;
+import io.cucumber.java.en.And;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.testng.Assert;
+
 
 public class AnhochSteps {
 
@@ -27,7 +31,7 @@ public class AnhochSteps {
     @Then("I verify that logo is displayed on page")
     public void i_verify_that_logo_is_displayed_on_page() throws InterruptedException {
         boolean b = driver.findElement(By.xpath("//*[@id=\"header\"]/div/div[1]/div/a/img")).isDisplayed();
-        Assert.assertEquals(true, b);
+        Assert.assertTrue(b);
         System.out.println(b);
     }
 
