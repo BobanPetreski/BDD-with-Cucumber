@@ -1,20 +1,22 @@
 package stepDefinitions;
 
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.junit.Assert;
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 public class SearchProduct {
 
-    WebDriver driver;
+    static WebDriver driver;
 
     @Given("I navigate to home page")
     public void i_navigate_to_home_page() {
-        System.setProperty("webdriver.chrome.driver", "C:/Users/Boban/Downloads/chromedriver_win32/chromedriver.exe");
+        WebDriverManager.chromedriver().setup();
         driver = new ChromeDriver();
         driver.navigate().to("https://www.anhoch.com/");
         driver.manage().window().maximize();
@@ -30,20 +32,69 @@ public class SearchProduct {
     }
     @Then("I enter product name")
     public void i_enter_product_name() throws InterruptedException {
-        driver.findElement(By.name("search")).sendKeys("Samsung");
+        driver.findElement(By.name("search")).sendKeys("Samsung S23");
         Thread.sleep(2000);
     }
-    @Then("Verify that search button is displayed")
-    public void verify_that_search_button_is_displayed() throws InterruptedException {
-        boolean d = driver.findElement(By.className("icon-search")).isDisplayed();
-        Assert.assertTrue(d);
-        System.out.println(d);
+
+    @And("Click on the requested product")
+    public void click_on_the_requested_product() {
+        driver.findElement(By.linkText("Samsung Galaxy S23 Plus 5G 8GB/512GB Cream")).click();
+    }
+
+    @Then("Add product to shopping cart")
+    public void add_product_to_shopping_cart() throws InterruptedException {
+        driver.findElement(By.xpath("//*[@id=\"product\"]/div[1]/div[2]/section/div/div[2]/div/div[3]/div/button")).click();
+        Thread.sleep(4000);
+    }
+
+
+    // Shopping Cart
+
+
+    @Given("I am in shopping cart")
+    public void i_am_in_shopping_cart()throws InterruptedException  {
+        String url = driver.getCurrentUrl();
+        System.out.println("Current url is:"+url);
         Thread.sleep(2000);
     }
-    @Then("Click search button")
-    public void click_search_button() {
-        driver.findElement(By.className("icon-search")).click();
+
+    @When("I check the name of heading")
+    public void i_check_the_name_of_heading() {
+
+        String expectedHeading = "Вашата кошничка";
+
+        String heading = driver.findElement(By.xpath("//*[@id=\"cart\"]/div/div[1]/h1")).getText();
+        if(expectedHeading.equalsIgnoreCase(heading))
+            System.out.println("The expected heading is same as actual heading --- "+heading);
+        else
+            System.out.println("The expected heading doesn't match the actual heading --- "+heading);
 
     }
+
+    @Then("I check the price of the product")
+    public void i_check_the_price_of_the_product() {
+
+        WebElement priceElement = driver.findElement(By.xpath("//*[@id=\"cart\"]/div/div[2]/div[1]/div/table/tbody/tr[1]/td[4]"));
+        String productPrice = priceElement.getText();
+        System.out.println("The price of the product is: " + productPrice);
+
+    }
+
+    @And("I increase the quantity of the product")
+    public void i_increase_the_quantity_of_the_product() throws InterruptedException {
+        driver.findElement(By.xpath("//tbody/tr[1]/td[3]/a[1]/i[1]")).click();
+        Thread.sleep(5000);
+    }
+
+    @Then("I check the price after increasing")
+    public void i_check_the_price_after_increasing() {
+        WebElement totalPrice = driver.findElement(By.xpath("//*[@id=\"cart\"]/div/div[2]/div[1]/div/table/tbody/tr[1]/td[5]"));
+        String productTotal = totalPrice.getText();
+        System.out.println("The price of the product after increasing is: " + productTotal);
+
+
+    }
+
+
 
 }

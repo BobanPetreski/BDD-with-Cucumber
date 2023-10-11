@@ -7,7 +7,7 @@ import org.junit.runner.RunWith;
 @CucumberOptions(
         features = ("C:/Users/Boban/Desktop/Learning Automation/CucumberSelenium/Features/"),
         glue = "stepDefinitions",
-        tags = " ",
+        tags = "",
         plugin = {"pretty",
                     "json:target/MyReports/report.json",
                     "junit:target/MyReports/report.xml"
